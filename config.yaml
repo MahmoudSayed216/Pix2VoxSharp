@@ -9,7 +9,7 @@ dataset:
   json_mapper: "/kaggle/working/Pix2VoxSharp/dataset mapper/ShapeNet.json"
 
 model:
-  pretrained: None  # either None, 1k or 22k
+  pretrained: True  # either None, 1k or 22k
   convnext_version: b
   negative_slope: 0.2
   use_bias: False
