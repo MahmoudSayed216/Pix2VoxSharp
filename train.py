@@ -73,6 +73,7 @@ def update_dataset_configs(loader):
 
 def train(configs):
     writer = Writer(configs["train_path"])
+    writer.add_line(configs)
     data_path = configs["dataset"]["data"]
     json_file_path = configs["dataset"]["json_mapper"]
 
@@ -218,9 +219,11 @@ def main():
     with open("config.yaml", "r") as f:
         configs = yaml.safe_load(f)
     DEBUGGER_SINGLETON.active = configs["use_debugger"]
-
+    
     train_path = initiate_training_environment(configs["output_dir"])
     configs["train_path"] = train_path
+    LOG("configs", configs)
+    
     train(configs=configs)
 
 
