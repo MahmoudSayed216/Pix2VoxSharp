@@ -73,7 +73,7 @@ def update_dataset_configs(loader):
 
 def train(configs):
     writer = Writer(configs["train_path"])
-    writer.add_line(configs)
+    writer.add_line(str(configs))
     data_path = configs["dataset"]["data"]
     json_file_path = configs["dataset"]["json_mapper"]
 
