@@ -116,7 +116,7 @@ def train(configs):
             TRAIN_LOSS_ACCUMUlATOR += loss.item()
             loss.backward()
             optimizer.step()
-            if idx % configs["train"]["save_every"] == 0:
+            if idx % 50 == 0:
 
                 LOG("current loss", loss.item())
 
