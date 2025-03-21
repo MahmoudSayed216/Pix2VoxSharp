@@ -1,6 +1,6 @@
 use_debugger: True
 output_dir: "/kaggle/working/"
-thresholds: [0.3, 0.4, 0.5]
+thresholds: [0.2, 0.3, 0.4]
 device: "cuda"
 
 
