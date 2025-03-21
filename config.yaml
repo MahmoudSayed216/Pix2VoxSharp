@@ -1,0 +1,29 @@
+use_debugger: True
+output_dir: "/home/mahmoud-sayed/Desktop/Graduation Project/current/ConVox/outputs"
+thresholds: [0.3, 0.4, 0.5]
+device: "cpu"
+
+
+dataset:
+  data: "/home/mahmoud-sayed/Desktop/Graduation Project/current/Data/Experimental"
+  json_mapper: "/home/mahmoud-sayed/Desktop/Graduation Project/current/ConVox/dataset mapper/ShapeNet3DClone.json"
+
+model:
+  pretrained: None  # either None, 1k or 22k
+  convnext_version: b
+  negative_slope: 0.2
+  use_bias: False
+
+optim:
+  type: AdamW   # can be Adam or sgd?
+  lr: 0.001
+  
+
+train:
+  epochs: 10
+  epochs_till_merger: 4
+  batch_size: 4
+  start_epoch: 0
+  save_every: 3
+  reduce_lr_epoch: 130
+  reduce_lr_factor: 0.5
