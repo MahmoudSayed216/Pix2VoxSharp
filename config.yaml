@@ -6,7 +6,7 @@ device: "cuda"
 
 dataset:
   data: "/kaggle/input/shapenet"
-  json_mapper: "/kaggle/working/3D-Reconstruction-GP/dataset mapper/ShapeNet.json"
+  json_mapper: "/kaggle/working/Pix2VoxSharp/dataset mapper/ShapeNet.json"
 
 model:
   pretrained: None  # either None, 1k or 22k
@@ -20,9 +20,9 @@ optim:
   
 
 train:
-  epochs: 10
-  epochs_till_merger: 4
-  batch_size: 4
+  epochs: 180
+  epochs_till_merger: 100
+  batch_size: 32
   start_epoch: 0
   save_every: 3
   reduce_lr_epoch: 130
