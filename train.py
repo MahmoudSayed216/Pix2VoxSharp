@@ -12,7 +12,7 @@ from metrics.loss import VoxelLoss
 from metrics.IoU import compute_iou
 from utils import network_utils
 from writer import Writer
-
+import numpy as np
 
 
 
@@ -20,9 +20,11 @@ def compute_validation_metrics(model, loss_fn, loader, THRESHOLDS, ITERATIONS_PE
     model.eval()
     VAL_LOSS_ACCUMULATOR = 0
 
+    IOU_20 = []
+    IOU_25 = []
     IOU_30 = []
+    IOU_35 = []
     IOU_40 = []
-    IOU_50 = []
 
     with torch.no_grad():
         for idx, batch in enumerate(loader):
@@ -34,19 +36,38 @@ def compute_validation_metrics(model, loss_fn, loader, THRESHOLDS, ITERATIONS_PE
 
             loss = loss_fn(outputs, volumes)
             VAL_LOSS_ACCUMULATOR+=loss.item()
-            iou30, iou40, iou50 = compute_iou(outputs, volumes, ths=THRESHOLDS)  ## ASSUMING THEY ARE 3
+            iou20, iou25, iou30, iou35, iou40 = compute_iou(outputs, volumes, ths=THRESHOLDS)  ## ASSUMING THEY ARE 3
+            IOU_20.append(iou20)
+            IOU_25.append(iou25)
             IOU_30.append(iou30)
+            IOU_35.append(iou35)
             IOU_40.append(iou40)
-            IOU_50.append(iou50)
 
         mean_val_loss = VAL_LOSS_ACCUMULATOR/ITERATIONS_PER_EPOCH
+        mean_IOU_20 = sum(IOU_20)/len(IOU_20)
+        mean_IOU_25 = sum(IOU_25)/len(IOU_25)
         mean_IOU_30 = sum(IOU_30)/len(IOU_30)
+        mean_IOU_35 = sum(IOU_35)/len(IOU_35)
         mean_IOU_40 = sum(IOU_40)/len(IOU_40)
-        mean_IOU_50 = sum(IOU_50)/len(IOU_50)
 
-    return mean_val_loss, [mean_IOU_30, mean_IOU_40, mean_IOU_50]
+    return mean_val_loss, [mean_IOU_20, mean_IOU_25, mean_IOU_30, mean_IOU_35, mean_IOU_40]
+
+def gaussian_random(low=1, high=12):
+    mu = 6.5
+    sigma = 3.5
+    while True:
+        x = np.random.normal(mu, sigma)  # Generate a Gaussian sample
+        if low <= x <= high:  # Accept only if within range
+            return int(round(x))  # Convert to integer
 
 
+
+def update_dataset_configs(loader):
+    random_value = gaussian_random(1, 12)
+    loader.dataset.set_n_views_rendering(random_value)
+
+    # loader.dataset.choose_images_indices_for_epoch()
+    return random_value
 
 
 
@@ -121,6 +142,8 @@ def train(configs):
                 LOG("current loss", loss.item())
 
         average_epoch_loss = TRAIN_LOSS_ACCUMUlATOR/ITERATIONS_PER_EPOCH_TRAIN
+
+        LOG("TESTING")
         valid_loss, valid_IoU = compute_validation_metrics(model, loss_fn, val_loader, THRESHOLDS, ITERATIONS_PER_EPOCH_VAL, configs)
         mean_iou = sum(valid_IoU)/len(valid_IoU)
 
@@ -161,12 +184,19 @@ def train(configs):
             LOG("MERGER ACTIVATED")
             writer.add_line("MERGER ACTIVATED")
 
+        if (epoch+1) >= configs["train"]["epochs_till_merger"]:
+            random_val = gaussian_random(1, 12)
+            train_loader.dataset.set_n_views_rendering(random_val)
+            val_loader.dataset.set_n_views_rendering(random_val)
+
         
         writer.add_scaler("TRAIN LOSS", epoch+1, average_epoch_loss)
         writer.add_scaler("VALID LOSS", epoch+1, valid_loss)
-        writer.add_scaler("VALID IoU@40", epoch+1, valid_IoU[0])
-        writer.add_scaler("VALID IoU@50", epoch+1, valid_IoU[1])
-        writer.add_scaler("VALID IoU@75", epoch+1, valid_IoU[2])
+        writer.add_scaler("VALID IoU@20", epoch+1, valid_IoU[0])
+        writer.add_scaler("VALID IoU@25", epoch+1, valid_IoU[1])
+        writer.add_scaler("VALID IoU@30", epoch+1, valid_IoU[2])
+        writer.add_scaler("VALID IoU@35", epoch+1, valid_IoU[3])
+        writer.add_scaler("VALID IoU@40", epoch+1, valid_IoU[4])
         writer.add_scaler("Mean IoU", epoch+1, mean_iou)
 
 
