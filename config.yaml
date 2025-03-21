@@ -1,12 +1,12 @@
 use_debugger: True
-output_dir: "/home/mahmoud-sayed/Desktop/Graduation Project/current/ConVox/outputs"
+output_dir: "/kaggle/working/"
 thresholds: [0.3, 0.4, 0.5]
-device: "cpu"
+device: "cuda"
 
 
 dataset:
-  data: "/home/mahmoud-sayed/Desktop/Graduation Project/current/Data/Experimental"
-  json_mapper: "/home/mahmoud-sayed/Desktop/Graduation Project/current/ConVox/dataset mapper/ShapeNet3DClone.json"
+  data: "/kaggle/input/shapenet"
+  json_mapper: "/kaggle/working/3D-Reconstruction-GP/dataset mapper/ShapeNet.json"
 
 model:
   pretrained: None  # either None, 1k or 22k
