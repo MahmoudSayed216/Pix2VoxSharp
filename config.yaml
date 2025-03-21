@@ -1,6 +1,6 @@
 use_debugger: True
 output_dir: "/kaggle/working/"
-thresholds: [0.2, 0.3, 0.4]
+thresholds: [0.2, 0.25, 0.3, 0.35, 0.4]
 device: "cuda"
 
 
@@ -20,10 +20,10 @@ optim:
   
 
 train:
-  epochs: 180
-  epochs_till_merger: 100
-  batch_size: 32
+  epochs: 150
+  epochs_till_merger: 80
+  batch_size: 50
   start_epoch: 0
   save_every: 3
-  reduce_lr_epoch: 130
+  reduce_lr_epoch: 110
   reduce_lr_factor: 0.5
