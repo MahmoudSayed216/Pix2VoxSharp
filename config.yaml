@@ -16,7 +16,7 @@ model:
 
 optim:
   type: AdamW   # can be Adam or sgd?
-  lr: 0.001
+  lr: 0.0001
   
 
 train:
