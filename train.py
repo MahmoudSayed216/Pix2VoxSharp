@@ -115,7 +115,8 @@ def train(configs):
         model.load_state_dict(model_state_dict)
         optimizer.load_state_dict(optimizer_state_dict)
         print("state dict loaded without any problems")
-
+    for param_group in optimizer.param_groups:
+    param_group['lr'] = configs["optim"]["lr"]  # New learning rate
     
     THRESHOLDS = configs["thresholds"]
     EPOCHS = configs["train"]["epochs"]
