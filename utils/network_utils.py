@@ -3,6 +3,8 @@ import torch.nn.init as init
 import torch
 from datetime import datetime as dt
 from utils.debugger import CHECKPOINT
+from collections import OrderedDict
+import os
 
 
 def init_weights(l):
@@ -31,3 +33,21 @@ def save_checkpoints(file_path, epoch_idx, model, model_solver, iou, epoch):
     }
 
     torch.save(checkpoint, file_path)
+
+
+def load_checkpoint(configs):
+    checkpoint_id = configs["train"]["checkpoint_id"]
+    output_path = configs["output_dir"]
+    checkpoint_type = configs["train"]["checkpoint_type"]
+    path = os.path.join(output_path, checkpoint_id, "weights", checkpoint_type+".pth")
+
+    checkpoint:dict = torch.load(path, map_location=configs["device"])
+
+    print(checkpoint.keys())
+    epoch = checkpoint['epoch_idx']
+    iou = checkpoint['iou']
+    model_state_dict:OrderedDict = checkpoint['model_state_dict']
+    solver_state_dict = checkpoint['model_solver_state_dict']
+
+
+    return epoch, iou, model_state_dict, solver_state_dict
