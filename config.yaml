@@ -27,3 +27,6 @@ train:
   save_every: 3
   reduce_lr_epoch: 110
   reduce_lr_factor: 0.5
+  continue_from_checkpoint: True
+  checkpoint_id: 2025-03-21_21-35-59
+  checkpoint_type: best
