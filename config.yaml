@@ -12,7 +12,7 @@ model:
   pretrained: True  # either None, 1k or 22k
   convnext_version: b
   negative_slope: 0.2
-  use_bias: True
+  use_bias: False
 
 optim:
   type: AdamW   # can be Adam or sgd?
