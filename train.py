@@ -135,6 +135,14 @@ def train(configs):
             model.set_merger(True)
             LOG("MERGER ACTIVATED")
             writer.add_line("MERGER ACTIVATED")
+
+        if (epoch+1) >= configs["train"]["epochs_till_merger"]:
+            # random_val = gaussian_random(1, 12)
+            random_val = 10
+            train_loader.dataset.set_n_views_rendering(random_val)
+            val_loader.dataset.set_n_views_rendering(random_val)
+
+        
         for idx, batch in enumerate(train_loader):
             optimizer.zero_grad()
             images, volumes = batch
@@ -191,14 +199,6 @@ def train(configs):
                 for param_group in optimizer.param_groups:
                     param_group['lr'] *= reduce_lr_factor
 
-
-        if (epoch+1) >= configs["train"]["epochs_till_merger"]:
-            # random_val = gaussian_random(1, 12)
-            random_val = 10
-            train_loader.dataset.set_n_views_rendering(random_val)
-            val_loader.dataset.set_n_views_rendering(random_val)
-
-        
         writer.add_scaler("TRAIN LOSS", epoch+1, average_epoch_loss)
         writer.add_scaler("VALID LOSS", epoch+1, valid_loss)
         for TH, iou in zip(THRESHOLDS, valid_IoUs):
