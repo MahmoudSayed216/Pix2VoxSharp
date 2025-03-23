@@ -193,7 +193,8 @@ def train(configs):
             writer.add_line("MERGER ACTIVATED")
 
         if (epoch+1) >= configs["train"]["epochs_till_merger"]:
-            random_val = gaussian_random(1, 12)
+            # random_val = gaussian_random(1, 12)
+            random_val = 10
             train_loader.dataset.set_n_views_rendering(random_val)
             val_loader.dataset.set_n_views_rendering(random_val)
 
