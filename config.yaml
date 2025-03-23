@@ -22,7 +22,7 @@ optim:
 train:
   epochs: 150
   epochs_till_merger: 48
-  batch_size: 32
+  batch_size: 6
   start_epoch: 0
   save_every: 3
   reduce_lr_epoch: 90
