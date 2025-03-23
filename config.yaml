@@ -16,12 +16,12 @@ model:
 
 optim:
   type: AdamW   # can be Adam or sgd?
-  lr: 0.001
+  lr: 0.0001
   
 
 train:
   epochs: 150
-  epochs_till_merger: 50
+  epochs_till_merger: 48
   batch_size: 32
   start_epoch: 0
   save_every: 3
