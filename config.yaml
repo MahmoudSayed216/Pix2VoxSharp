@@ -22,11 +22,11 @@ optim:
 train:
   epochs: 150
   epochs_till_merger: 50
-  batch_size: 50
+  batch_size: 32
   start_epoch: 0
   save_every: 3
   reduce_lr_epoch: 90
-  reduce_lr_factor: 0.5
+  reduce_lr_factor: 0.3
   continue_from_checkpoint: True
   checkpoint_id: 2025-03-22_23-40-57
   checkpoint_type: best
